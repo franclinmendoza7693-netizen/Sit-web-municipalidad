@@ -1,0 +1,17 @@
+{
+  "name": "server-tramites-yau",
+  "version": "1.0.0",
+  "description": "API del sistema de tramites y seleccion de curriculos con Machine Learning - Municipalidad Provincial de Yau",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Equipo Trabajo Final",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql": "^2.18.1"
+  }
+}
