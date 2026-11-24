@@ -1,0 +1,1266 @@
+/* =====================================================================
+   SISTEMA DE DISEÑO - Municipalidad Provincial de Yau
+   Responsable: Integrante 1 (Master)
+
+   Idea: la "mesa de partes". Colores tomados de la tinta de los sellos y
+   del papel de los expedientes. Todos los modulos usan estas variables,
+   asi el sistema se ve igual en cada pantalla.
+
+   Se sigue usando Bootstrap (card, input-group, table-striped, btn-group)
+   como en clase; aqui solo se ajusta su apariencia.
+   ===================================================================== */
+
+:root {
+  /* Paleta base */
+  --tinta: #1f2a44;          /* texto principal y menu lateral */
+  --tinta-suave: #5b6678;    /* textos secundarios */
+  --papel: #eef1f4;          /* fondo de la aplicacion */
+  --blanco: #ffffff;         /* paneles */
+  --linea: #d5dbe3;          /* bordes */
+  --linea-suave: #e7ebf0;
+  --sello: #0e7c7b;          /* accion principal (color del tampon) */
+  --sello-oscuro: #0a5f5e;
+  --sello-claro: #e3f2f1;
+
+  /* Prioridad (resultado del Machine Learning) */
+  --alta: #c2410c;
+  --alta-claro: #fdeee6;
+  --media: #b7791f;
+  --media-claro: #fbf3e2;
+  --baja: #3f7d58;
+  --baja-claro: #e8f3ec;
+
+  /* Estados del tramite */
+  --peligro: #b42318;
+  --peligro-claro: #fdecea;
+  --revision: #2f5da8;
+  --revision-claro: #e8effa;
+
+  /* Forma */
+  --radio-panel: 10px;
+  --radio-control: 8px;
+  --fuente: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* ---------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------- */
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--fuente);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  color: var(--tinta);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--sello) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.numero {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------
+   Estructura: menu lateral + contenido
+   --------------------------------------------------------------------- */
+.app {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  min-height: 100vh;
+  /* la columna del menu se pinta hasta el final aunque la pagina sea larga */
+  background: linear-gradient(to right, var(--tinta) 264px, var(--papel) 264px);
+}
+
+.menu {
+  background: var(--tinta);
+  color: #c9d1de;
+  padding: 24px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.marca {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 0 8px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+/* Emblema: un sello circular con las iniciales */
+.marca-sello {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid #7fc8c6;
+  box-shadow: inset 0 0 0 3px var(--tinta), inset 0 0 0 4px #7fc8c6;
+  display: grid;
+  place-items: center;
+  color: #7fc8c6;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.marca-texto strong {
+  display: block;
+  color: var(--blanco);
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.marca-texto span {
+  font-size: 13px;
+  color: #93a0b4;
+}
+
+.menu-grupo {
+  font-size: 12.5px;
+  color: #8692a6;
+  margin: 18px 10px 6px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #d3dae5;
+  text-align: left;
+  padding: 9px 12px;
+  border-radius: var(--radio-control);
+  font-size: 15px;
+}
+
+.menu-item i {
+  font-size: 17px;
+  opacity: 0.85;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--blanco);
+}
+
+.menu-item.activo {
+  background: var(--blanco);
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+.menu-item.activo i {
+  color: var(--sello);
+  opacity: 1;
+}
+
+.menu-pie {
+  margin-top: auto;
+  padding: 16px 10px 0;
+  font-size: 12.5px;
+  color: #7c879b;
+}
+
+.contenido {
+  padding: 28px 36px 48px;
+  min-width: 0;
+}
+
+.barra-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--tinta-suave);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.barra-superior .fecha i {
+  margin-right: 6px;
+}
+
+/* ---------------------------------------------------------------------
+   Cabecera de cada pagina (cada modulo pone su titulo y descripcion)
+   --------------------------------------------------------------------- */
+.pagina-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.pagina-cabecera h1 {
+  font-size: 28px;
+  margin: 0 0 4px;
+}
+
+.pagina-cabecera p {
+  margin: 0;
+  color: var(--tinta-suave);
+  max-width: 64ch;
+}
+
+/* ---------------------------------------------------------------------
+   Diseño CRUD
+   - Pantallas normales (laptop): formulario arriba con los campos en
+     columnas y la lista a todo el ancho.
+   - Monitores grandes (1680px o mas): formulario a la izquierda y
+     lista a la derecha.
+   --------------------------------------------------------------------- */
+.crud {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.crud > .formulario > .card-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  column-gap: 16px;
+}
+
+/* Los textos largos ocupan toda la fila */
+.crud > .formulario > .card-body > .input-group:has(textarea),
+.crud > .formulario > .card-body > .ayuda,
+.crud > .formulario > .card-body > .form-check {
+  grid-column: 1 / -1;
+}
+
+/* Variante: formulario siempre arriba (bandeja de expedientes) */
+.crud-apilado > .formulario {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1680px) {
+  .crud:not(.crud-apilado) {
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+
+  .crud:not(.crud-apilado) > .formulario {
+    position: sticky;
+    top: 20px;
+  }
+
+  .crud:not(.crud-apilado) > .formulario > .card-body {
+    display: block;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Bootstrap: card
+   --------------------------------------------------------------------- */
+.card {
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-panel);
+  background: var(--blanco);
+}
+
+.card-header {
+  background: var(--blanco);
+  border-bottom: 1px solid var(--linea-suave);
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card-header:first-child {
+  border-radius: var(--radio-panel) var(--radio-panel) 0 0;
+}
+
+.card-header .card-header-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header .card-header-titulo i {
+  color: var(--sello);
+}
+
+.card-body {
+  padding: 18px;
+}
+
+.card-footer {
+  background: #f7f9fb;
+  border-top: 1px solid var(--linea-suave);
+  padding: 12px 18px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.card-footer:last-child {
+  border-radius: 0 0 var(--radio-panel) var(--radio-panel);
+}
+
+/* Formulario en modo edicion: el panel cambia de color para que se note */
+.card.editando {
+  border-color: var(--sello);
+  box-shadow: 0 0 0 3px var(--sello-claro);
+}
+
+.card.editando .card-header {
+  background: var(--sello-claro);
+}
+
+.contador {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tinta-suave);
+  background: var(--papel);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+/* ---------------------------------------------------------------------
+   Bootstrap: input-group y controles
+   --------------------------------------------------------------------- */
+.input-group-text {
+  min-width: 118px;
+  background: #f5f7fa;
+  border-color: var(--linea);
+  color: var(--tinta-suave);
+  font-size: 14px;
+  gap: 8px;
+}
+
+.form-control,
+.form-select {
+  border-color: var(--linea);
+  color: var(--tinta);
+  font-size: 15px;
+}
+
+.input-group > .form-control,
+.input-group > .form-select,
+.input-group > .input-group-text {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.input-group > :first-child {
+  border-top-left-radius: var(--radio-control);
+  border-bottom-left-radius: var(--radio-control);
+}
+
+.input-group > :last-child {
+  border-top-right-radius: var(--radio-control);
+  border-bottom-right-radius: var(--radio-control);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--sello);
+  box-shadow: 0 0 0 3px var(--sello-claro);
+}
+
+.form-control::placeholder {
+  color: #9aa4b4;
+}
+
+textarea.form-control {
+  min-height: 96px;
+}
+
+.form-check-input:checked {
+  background-color: var(--sello);
+  border-color: var(--sello);
+}
+
+.ayuda {
+  font-size: 13px;
+  color: var(--tinta-suave);
+  margin: -8px 0 14px;
+}
+
+/* ---------------------------------------------------------------------
+   Bootstrap: botones (mismas clases de clase, nuevo aspecto)
+   btn-success = Registrar | btn-warning = Actualizar | btn-info = Editar/Cancelar
+   btn-danger  = Eliminar
+   --------------------------------------------------------------------- */
+.btn {
+  border-radius: var(--radio-control);
+  font-weight: 700;
+  font-size: 14.5px;
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-success {
+  background: var(--sello);
+  border-color: var(--sello);
+  color: var(--blanco);
+}
+
+.btn-success:hover,
+.btn-success:focus {
+  background: var(--sello-oscuro);
+  border-color: var(--sello-oscuro);
+}
+
+.btn-warning {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--blanco);
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+  background: #2c3b5e;
+  border-color: #2c3b5e;
+  color: var(--blanco);
+}
+
+.btn-info {
+  background: var(--blanco);
+  border-color: var(--linea);
+  color: var(--tinta);
+}
+
+.btn-info:hover,
+.btn-info:focus {
+  background: var(--papel);
+  border-color: #b9c2cf;
+  color: var(--tinta);
+}
+
+.btn-danger {
+  background: var(--blanco);
+  border-color: var(--linea);
+  color: var(--peligro);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background: var(--peligro);
+  border-color: var(--peligro);
+  color: var(--blanco);
+}
+
+.btn-group .btn {
+  padding: 6px 12px;
+  font-size: 13.5px;
+}
+
+.btn-group > .btn:not(:last-child) {
+  border-right-width: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Bootstrap: tablas
+   --------------------------------------------------------------------- */
+.table {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+}
+
+.table > thead th {
+  background: var(--blanco);
+  color: var(--tinta-suave);
+  font-weight: 700;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--linea);
+  padding: 12px 14px;
+  white-space: nowrap;
+}
+
+.table > tbody td,
+.table > tbody th {
+  padding: 12px 14px;
+  border-color: var(--linea-suave);
+  color: var(--tinta);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-bg-type: #f8fafc;
+  --bs-table-accent-bg: #f8fafc;
+  --bs-table-striped-bg: #f8fafc;
+}
+
+.table > tbody tr:hover > * {
+  --bs-table-bg-state: var(--sello-claro);
+  --bs-table-accent-bg: var(--sello-claro);
+}
+
+.table tr.fila-editando > * {
+  --bs-table-bg-state: var(--sello-claro);
+  --bs-table-accent-bg: var(--sello-claro);
+}
+
+/* La columna de acciones y las etiquetas nunca se parten en dos lineas */
+.table td:last-child,
+.sin-corte,
+.btn-group,
+.etiqueta,
+.prioridad {
+  white-space: nowrap;
+}
+
+.celda-principal {
+  font-weight: 700;
+  min-width: 190px;
+}
+
+.celda-secundaria {
+  display: block;
+  font-size: 13px;
+  color: var(--tinta-suave);
+  font-weight: 400;
+}
+
+/* Lista vacia: invita a actuar */
+.vacio {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--tinta-suave);
+}
+
+.vacio i {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 8px;
+  color: #a6b0bf;
+}
+
+/* Barra de busqueda/filtros sobre las tablas */
+.filtros {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--linea-suave);
+}
+
+.filtros .form-control,
+.filtros .form-select {
+  max-width: 260px;
+}
+
+/* ---------------------------------------------------------------------
+   ELEMENTO DISTINTIVO: expediente con pestaña de prioridad
+   --------------------------------------------------------------------- */
+.expediente {
+  display: inline-block;
+  border: 1.5px solid var(--tinta);
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--tinta);
+  background: var(--blanco);
+  white-space: nowrap;
+}
+
+/* La fila del tramite lleva una pestaña de color a la izquierda */
+tr.pestana-ALTA > td:first-child,
+tr.pestana-MEDIA > td:first-child,
+tr.pestana-BAJA > td:first-child {
+  border-left: 5px solid transparent;
+}
+
+tr.pestana-ALTA > td:first-child { border-left-color: var(--alta); }
+tr.pestana-MEDIA > td:first-child { border-left-color: var(--media); }
+tr.pestana-BAJA > td:first-child { border-left-color: var(--baja); }
+tr.atendido > td { opacity: 0.6; }
+
+.prioridad {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 2px 9px;
+  border-radius: 4px;
+}
+
+.prioridad::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.prioridad-ALTA { color: var(--alta); background: var(--alta-claro); }
+.prioridad-MEDIA { color: var(--media); background: var(--media-claro); }
+.prioridad-BAJA { color: var(--baja); background: var(--baja-claro); }
+
+.puntaje {
+  display: block;
+  height: 4px;
+  width: 72px;
+  background: var(--linea-suave);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.puntaje > span {
+  display: block;
+  height: 100%;
+  background: var(--tinta);
+}
+
+/* Estado del tramite */
+.estado {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.estado-REGISTRADO { background: #edf0f4; color: #44516a; }
+.estado-EN_REVISION { background: var(--revision-claro); color: var(--revision); }
+.estado-OBSERVADO { background: var(--media-claro); color: #8a5a12; }
+.estado-APROBADO { background: var(--baja-claro); color: var(--baja); }
+.estado-RECHAZADO { background: var(--peligro-claro); color: var(--peligro); }
+.estado-FINALIZADO { background: var(--tinta); color: var(--blanco); }
+
+.plazo-vencido { color: var(--peligro); font-weight: 700; }
+.plazo-cerca { color: #8a5a12; font-weight: 700; }
+
+.etiqueta {
+  display: inline-block;
+  font-size: 12.5px;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--papel);
+  color: var(--tinta-suave);
+  margin: 2px 4px 2px 0;
+}
+
+.etiqueta-sello { background: var(--sello-claro); color: var(--sello-oscuro); font-weight: 700; }
+
+/* ---------------------------------------------------------------------
+   Dashboard
+   --------------------------------------------------------------------- */
+.resumen-dia {
+  background: var(--blanco);
+  border: 1px solid var(--linea);
+  border-left: 6px solid var(--alta);
+  border-radius: var(--radio-panel);
+  padding: 22px 26px;
+  margin-bottom: 20px;
+}
+
+.resumen-dia h2 {
+  font-size: 26px;
+  line-height: 1.3;
+  font-weight: 400;
+  margin: 0 0 14px;
+  max-width: 40ch;
+}
+
+.resumen-dia h2 b {
+  font-weight: 700;
+}
+
+.resumen-cifras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  color: var(--tinta-suave);
+  font-size: 14.5px;
+}
+
+.resumen-cifras b {
+  color: var(--tinta);
+  font-size: 17px;
+  margin-right: 4px;
+}
+
+.tablero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.barra-fila {
+  display: grid;
+  grid-template-columns: 130px 1fr 40px;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 0;
+  font-size: 14px;
+}
+
+.barra-pista {
+  height: 10px;
+  background: var(--papel);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.barra-pista > span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+}
+
+.semaforo {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.semaforo-rojo { background: var(--peligro); }
+.semaforo-ambar { background: var(--media); }
+.semaforo-verde { background: var(--baja); }
+
+/* ---------------------------------------------------------------------
+   Metricas del modelo y ranking
+   --------------------------------------------------------------------- */
+.metricas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--linea-suave);
+}
+
+.metrica {
+  padding: 16px 18px;
+  border-right: 1px solid var(--linea-suave);
+}
+
+.metrica:last-child {
+  border-right: 0;
+}
+
+.metrica strong {
+  display: block;
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+}
+
+.metrica span {
+  font-size: 13.5px;
+  color: var(--tinta-suave);
+}
+
+.matriz {
+  display: grid;
+  grid-template-columns: 90px repeat(3, 1fr);
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.matriz div {
+  padding: 10px 6px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.matriz .eje {
+  color: var(--tinta-suave);
+  font-size: 13px;
+}
+
+.matriz .celda {
+  font-weight: 700;
+}
+
+.probabilidad {
+  display: grid;
+  grid-template-columns: 70px 1fr 64px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.explicacion {
+  font-size: 14px;
+  color: var(--tinta-suave);
+}
+
+.explicacion ol {
+  padding-left: 18px;
+  margin: 8px 0 0;
+}
+
+.explicacion li {
+  margin-bottom: 4px;
+}
+
+.puesto {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--linea);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.puesto-1 { border-color: var(--sello); color: var(--sello); background: var(--sello-claro); }
+
+/* ---------------------------------------------------------------------
+   Consulta del ciudadano: linea de avance y alertas
+   --------------------------------------------------------------------- */
+.consulta {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.avance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 8px 0 22px;
+}
+
+.avance-paso {
+  position: relative;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--tinta-suave);
+}
+
+.avance-paso::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: -50%;
+  width: 100%;
+  height: 3px;
+  background: var(--linea);
+  z-index: 0;
+}
+
+.avance-paso:first-child::before {
+  display: none;
+}
+
+.avance-punto {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: var(--blanco);
+  border: 3px solid var(--linea);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+.avance-paso.hecho .avance-punto {
+  background: var(--sello);
+  border-color: var(--sello);
+  color: var(--blanco);
+}
+
+.avance-paso.hecho::before {
+  background: var(--sello);
+}
+
+.avance-paso.actual {
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+.linea-tiempo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linea-tiempo li {
+  position: relative;
+  padding: 0 0 16px 24px;
+  border-left: 2px solid var(--linea);
+  margin-left: 6px;
+}
+
+.linea-tiempo li:last-child {
+  border-left-color: transparent;
+}
+
+.linea-tiempo li::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--blanco);
+  border: 3px solid var(--sello);
+}
+
+.linea-tiempo small {
+  display: block;
+  color: var(--tinta-suave);
+}
+
+.alerta-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--linea-suave);
+}
+
+.alerta-item:last-child {
+  border-bottom: 0;
+}
+
+.alerta-item i {
+  font-size: 18px;
+  color: var(--sello);
+}
+
+.alerta-item.nueva {
+  background: linear-gradient(90deg, var(--sello-claro), transparent 60%);
+  margin: 0 -18px;
+  padding: 12px 18px;
+}
+
+.en-vivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sello-oscuro);
+  font-weight: 700;
+}
+
+.en-vivo::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sello);
+  animation: latido 2s ease-in-out infinite;
+}
+
+@keyframes latido {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* Estrellas de calificacion (feedback) */
+.estrellas {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.estrellas button {
+  border: 0;
+  background: transparent;
+  padding: 0 2px;
+  font-size: 24px;
+  color: #c4ccd8;
+  line-height: 1;
+}
+
+.estrellas button.llena,
+.estrellas i.llena {
+  color: var(--media);
+}
+
+.estrellas i {
+  color: #c4ccd8;
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------------------
+   SweetAlert2 con la misma tipografia
+   --------------------------------------------------------------------- */
+.swal2-popup {
+  font-family: var(--fuente) !important;
+  border-radius: var(--radio-panel) !important;
+}
+
+.swal2-title {
+  color: var(--tinta) !important;
+}
+
+.swal-izquierda {
+  text-align: left;
+}
+
+/* Iconos de SweetAlert2 con los colores del sistema */
+.swal2-icon.swal2-success {
+  border-color: var(--sello) !important;
+  color: var(--sello) !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: color-mix(in srgb, var(--sello) 30%, transparent) !important;
+}
+
+.swal2-icon.swal2-success [class^="swal2-success-line"] {
+  background-color: var(--sello) !important;
+}
+
+.swal2-icon.swal2-info {
+  border-color: var(--sello) !important;
+  color: var(--sello) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--media) !important;
+  color: var(--media) !important;
+}
+
+
+/* ---------------------------------------------------------------------
+   Inicio de sesion
+   --------------------------------------------------------------------- */
+.login {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+}
+
+.login-marca {
+  background: var(--tinta);
+  color: #c9d1de;
+  padding: 48px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.login-marca .marca {
+  border-bottom: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.login-marca h1 {
+  color: var(--blanco);
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1.15;
+  max-width: 17ch;
+  margin: 0;
+}
+
+.login-puntos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+  font-size: 16px;
+}
+
+.login-puntos i {
+  color: #7fc8c6;
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.login-formulario {
+  display: grid;
+  place-items: center;
+  padding: 40px 24px;
+}
+
+.login-formulario .card {
+  width: 100%;
+  max-width: 440px;
+}
+
+.login-icono {
+  min-width: 0;
+  width: 46px;
+  justify-content: center;
+}
+
+.login-error {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--peligro-claro);
+  color: var(--peligro);
+  border-radius: var(--radio-control);
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  font-size: 14.5px;
+}
+
+.login-enlace {
+  color: var(--sello-oscuro);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.login-enlace:hover {
+  text-decoration: underline;
+  color: var(--sello-oscuro);
+}
+
+/* Usuario conectado (barra superior) */
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sesion-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--sello-claro);
+  color: var(--sello-oscuro);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.sesion-datos {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.sesion-datos strong {
+  color: var(--tinta);
+  font-size: 14.5px;
+}
+
+.sesion-datos span {
+  font-size: 12.5px;
+}
+
+/* Portal publico del ciudadano */
+.portal-cabecera {
+  background: var(--tinta);
+  padding: 14px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-cabecera .marca {
+  border-bottom: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.portal-contenido {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+@media (max-width: 860px) {
+  .login {
+    grid-template-columns: 1fr;
+  }
+
+  .login-marca {
+    padding: 28px 24px;
+  }
+
+  .login-puntos {
+    display: none;
+  }
+
+  .sesion-datos {
+    display: none;
+  }
+
+  .portal-cabecera {
+    padding: 14px 16px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Responsive: tablet y celular
+   --------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .tablero,
+  .consulta {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: 1fr;
+    background: var(--papel);
+  }
+
+  .menu {
+    position: static;
+    height: auto;
+    padding: 14px;
+  }
+
+  .menu nav {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .menu-grupo,
+  .menu-pie {
+    display: none;
+  }
+
+  .menu-item {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .marca {
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+
+  .contenido {
+    padding: 20px 16px 40px;
+  }
+
+  .metricas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .en-vivo::before {
+    animation: none;
+  }
+}
