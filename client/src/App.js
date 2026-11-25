@@ -29,17 +29,15 @@ import Feedback from './components/feedback/Feedback';
 // ===================== FIN IMPORTS INTEGRANTE 1 ==========================
 
 
-// ===================== IMPORTS INTEGRANTE 2 ==============================
-// import Tramites from './components/tramites/Tramites';
-// import ModeloML from './components/tramites/ModeloML';
-// ===================== FIN IMPORTS INTEGRANTE 2 ==========================
+import Tramites from './components/tramites/Tramites';
+import ModeloML from './components/tramites/ModeloML';
 
 
 // ===================== IMPORTS INTEGRANTE 3 ==============================
-// import ConsultaTramite from './components/alertas/ConsultaTramite';
-// import Notificaciones from './components/alertas/Notificaciones';
-// import Convocatorias from './components/curriculos/Convocatorias';
-// import Postulantes from './components/curriculos/Postulantes';
+import ConsultaTramite from './components/alertas/ConsultaTramite';
+import Notificaciones from './components/alertas/Notificaciones';
+import Convocatorias from './components/curriculos/Convocatorias';
+import Postulantes from './components/curriculos/Postulantes';
 // ===================== FIN IMPORTS INTEGRANTE 3 ==========================
 
 
@@ -147,9 +145,9 @@ function App() {
           <main className="contenido portal-contenido">
 
             {/* ================= PORTAL INTEGRANTE 3 ======================== */}
-            {/*
+            
             <ConsultaTramite />
-            */}
+            
             {/* ================= FIN PORTAL INTEGRANTE 3 ==================== */}
 
           </main>
@@ -187,24 +185,22 @@ function App() {
           {/* ================= FIN MENU INTEGRANTE 1 ====================== */}
 
 
-          {/* ================= MENU INTEGRANTE 2 ========================== */}
-          {/*
+          
           <p className="menu-grupo">Gestión de trámites</p>
           {opcion("tramites", "bi-folder2-open", "Bandeja de expedientes")}
           {opcion("modelo", "bi-cpu", "Modelo de prioridad", true)}
-          */}
-          {/* ================= FIN MENU INTEGRANTE 2 ====================== */}
+          
 
 
           {/* ================= MENU INTEGRANTE 3 ========================== */}
-          {/*
+          
           <p className="menu-grupo">Atención al ciudadano</p>
           {opcion("consulta", "bi-search", "Consultar expediente")}
           {opcion("notificaciones", "bi-bell", "Alertas enviadas")}
           {esAdmin && <p className="menu-grupo">Selección de personal</p>}
           {opcion("convocatorias", "bi-megaphone", "Convocatorias", true)}
           {opcion("postulantes", "bi-file-earmark-person", "Evaluación de CV", true)}
-          */}
+          
           {/* ================= FIN MENU INTEGRANTE 3 ====================== */}
 
 
@@ -249,21 +245,17 @@ function App() {
         {/* ================= FIN PANTALLAS INTEGRANTE 1 =================== */}
 
 
-        {/* ================= PANTALLAS INTEGRANTE 2 ======================= */}
-        {/*
         {vista === "tramites" && <Tramites />}
         {vista === "modelo" && esAdmin && <ModeloML />}
-        */}
-        {/* ================= FIN PANTALLAS INTEGRANTE 2 =================== */}
 
 
         {/* ================= PANTALLAS INTEGRANTE 3 ======================= */}
-        {/*
+        
         {vista === "consulta" && <ConsultaTramite />}
         {vista === "notificaciones" && <Notificaciones />}
         {vista === "convocatorias" && esAdmin && <Convocatorias />}
         {vista === "postulantes" && esAdmin && <Postulantes />}
-        */}
+        
         {/* ================= FIN PANTALLAS INTEGRANTE 3 =================== */}
       </main>
 
