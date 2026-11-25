@@ -40,8 +40,9 @@ function generarToken() {
 // Middleware: se ejecuta antes de cada ruta
 // ---------------------------------------------------------------------
 function verificarToken(req, res, next) {
-    const esPublica = RUTAS_PUBLICAS.some((ruta) =>
-        ruta === "/" ? req.path === "/" : req.path === ruta || req.path.startsWith(ruta + "/")
+    const ruta = req.path.toLowerCase(); // Express no distingue mayusculas en las rutas
+    const esPublica = RUTAS_PUBLICAS.some((publica) =>
+        publica === "/" ? ruta === "/" : ruta === publica || ruta.startsWith(publica + "/")
     );
     if (esPublica) {
         return next();
@@ -78,7 +79,8 @@ const RUTAS_SOLO_ADMIN = ["/area", "/tipo", "/empleado", "/usuario", "/ml/entren
 
 function soloAdminEnEscritura(req, res, next) {
     const esEscritura = req.method !== "GET";
-    const esRutaAdmin = RUTAS_SOLO_ADMIN.some((ruta) => req.path === ruta || req.path.startsWith(ruta + "/"));
+    const ruta = req.path.toLowerCase();
+    const esRutaAdmin = RUTAS_SOLO_ADMIN.some((protegida) => ruta === protegida || ruta.startsWith(protegida + "/"));
     if (esEscritura && esRutaAdmin && (!req.usuario || req.usuario.rol !== "ADMINISTRADOR")) {
         return res.status(403).send("Su rol de trabajador no permite esta acción. Pida ayuda a un administrador.");
     }
