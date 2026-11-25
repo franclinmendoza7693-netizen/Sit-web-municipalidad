@@ -36,10 +36,10 @@ import Feedback from './components/feedback/Feedback';
 
 
 // ===================== IMPORTS INTEGRANTE 3 ==============================
-// import ConsultaTramite from './components/alertas/ConsultaTramite';
-// import Notificaciones from './components/alertas/Notificaciones';
-// import Convocatorias from './components/curriculos/Convocatorias';
-// import Postulantes from './components/curriculos/Postulantes';
+import ConsultaTramite from './components/alertas/ConsultaTramite';
+import Notificaciones from './components/alertas/Notificaciones';
+import Convocatorias from './components/curriculos/Convocatorias';
+import Postulantes from './components/curriculos/Postulantes';
 // ===================== FIN IMPORTS INTEGRANTE 3 ==========================
 
 
@@ -147,9 +147,9 @@ function App() {
           <main className="contenido portal-contenido">
 
             {/* ================= PORTAL INTEGRANTE 3 ======================== */}
-            {/*
+            
             <ConsultaTramite />
-            */}
+            
             {/* ================= FIN PORTAL INTEGRANTE 3 ==================== */}
 
           </main>
@@ -197,14 +197,14 @@ function App() {
 
 
           {/* ================= MENU INTEGRANTE 3 ========================== */}
-          {/*
+          
           <p className="menu-grupo">Atención al ciudadano</p>
           {opcion("consulta", "bi-search", "Consultar expediente")}
           {opcion("notificaciones", "bi-bell", "Alertas enviadas")}
           {esAdmin && <p className="menu-grupo">Selección de personal</p>}
           {opcion("convocatorias", "bi-megaphone", "Convocatorias", true)}
           {opcion("postulantes", "bi-file-earmark-person", "Evaluación de CV", true)}
-          */}
+          
           {/* ================= FIN MENU INTEGRANTE 3 ====================== */}
 
 
@@ -258,12 +258,12 @@ function App() {
 
 
         {/* ================= PANTALLAS INTEGRANTE 3 ======================= */}
-        {/*
+        
         {vista === "consulta" && <ConsultaTramite />}
         {vista === "notificaciones" && <Notificaciones />}
         {vista === "convocatorias" && esAdmin && <Convocatorias />}
         {vista === "postulantes" && esAdmin && <Postulantes />}
-        */}
+        
         {/* ================= FIN PANTALLAS INTEGRANTE 3 =================== */}
       </main>
 
