@@ -67,12 +67,12 @@ app.use(feedbackRoutes);
 // BLOQUE INTEGRANTE 3 : alertas al ciudadano + seleccion de curriculos
 // (descomentar estas lineas al subir los archivos del Integrante 3)
 // =====================================================================
-// const notificacionRoutes = require("./routes/notificacionRoutes");
-// const convocatoriaRoutes = require("./routes/convocatoriaRoutes");
-// const postulanteRoutes = require("./routes/postulanteRoutes");
-// app.use(notificacionRoutes);
-// app.use(convocatoriaRoutes);
-// app.use(postulanteRoutes);
+const notificacionRoutes = require("./routes/notificacionRoutes");
+const convocatoriaRoutes = require("./routes/convocatoriaRoutes");
+const postulanteRoutes = require("./routes/postulanteRoutes");
+app.use(notificacionRoutes);
+app.use(convocatoriaRoutes);
+app.use(postulanteRoutes);
 // ===================== FIN BLOQUE INTEGRANTE 3 =======================
 
 
