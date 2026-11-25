@@ -29,10 +29,8 @@ import Feedback from './components/feedback/Feedback';
 // ===================== FIN IMPORTS INTEGRANTE 1 ==========================
 
 
-// ===================== IMPORTS INTEGRANTE 2 ==============================
-// import Tramites from './components/tramites/Tramites';
-// import ModeloML from './components/tramites/ModeloML';
-// ===================== FIN IMPORTS INTEGRANTE 2 ==========================
+import Tramites from './components/tramites/Tramites';
+import ModeloML from './components/tramites/ModeloML';
 
 
 // ===================== IMPORTS INTEGRANTE 3 ==============================
@@ -187,13 +185,11 @@ function App() {
           {/* ================= FIN MENU INTEGRANTE 1 ====================== */}
 
 
-          {/* ================= MENU INTEGRANTE 2 ========================== */}
-          {/*
+          
           <p className="menu-grupo">Gestión de trámites</p>
           {opcion("tramites", "bi-folder2-open", "Bandeja de expedientes")}
           {opcion("modelo", "bi-cpu", "Modelo de prioridad", true)}
-          */}
-          {/* ================= FIN MENU INTEGRANTE 2 ====================== */}
+          
 
 
           {/* ================= MENU INTEGRANTE 3 ========================== */}
@@ -249,12 +245,8 @@ function App() {
         {/* ================= FIN PANTALLAS INTEGRANTE 1 =================== */}
 
 
-        {/* ================= PANTALLAS INTEGRANTE 2 ======================= */}
-        {/*
         {vista === "tramites" && <Tramites />}
         {vista === "modelo" && esAdmin && <ModeloML />}
-        */}
-        {/* ================= FIN PANTALLAS INTEGRANTE 2 =================== */}
 
 
         {/* ================= PANTALLAS INTEGRANTE 3 ======================= */}
