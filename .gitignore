@@ -1,0 +1,19 @@
+# Dependencias (se instalan con npm install, NO se suben a GitHub)
+node_modules/
+
+# Compilado de React
+client/build/
+
+# Variables de entorno
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operativo / editor
+.DS_Store
+Thumbs.db
+.vscode/
