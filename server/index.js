@@ -52,16 +52,10 @@ app.use(feedbackRoutes);
 // ===================== FIN BLOQUE INTEGRANTE 1 =======================
 
 
-// =====================================================================
-// BLOQUE INTEGRANTE 2 : tramites + Machine Learning (Naive Bayes)
-// (descomentar estas lineas al subir los archivos del Integrante 2)
-// =====================================================================
-// const tramiteRoutes = require("./routes/tramiteRoutes");
-// const modeloRoutes = require("./routes/modeloRoutes");
-// app.use(tramiteRoutes);
-// app.use(modeloRoutes);
-// ===================== FIN BLOQUE INTEGRANTE 2 =======================
-
+const tramiteRoutes = require("./routes/tramiteRoutes");
+const modeloRoutes = require("./routes/modeloRoutes");
+app.use(tramiteRoutes);
+app.use(modeloRoutes);
 
 // =====================================================================
 // BLOQUE INTEGRANTE 3 : alertas al ciudadano + seleccion de curriculos
